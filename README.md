@@ -1,12 +1,37 @@
 # KI-News-Monitor
 
-Experimenteller persönlicher KI-News-Monitor für macOS. Sammelt YouTube-Beiträge und optional öffentliche X-Posts, extrahiert einzelne Themen und speichert Quellenbelege sowie unabhängige Markierungen in SQLite. Ausgaben auf Deutsch, Originalstellen mit Zeitmarken in der Quellensprache.
+**Dein persönlicher KI-News-Monitor in der Codex Desktop App: Nachrichten per Skript sammeln, im Chat verstehen und gezielt für die eigene Arbeit nutzen.**
 
-Kundenlösungen, eigene technische Umsetzung und Marketing werden gleich gewichtet. Quellenbehauptungen, eigene Einschätzungen und Werbung bleiben getrennt.
+Du öffnest das eingerichtete Projekt in Codex und schreibst **„News“**. Codex liest dein lokales Archiv, zeigt ungelesene Meldungen und hilft dir, einzelne Themen zu vertiefen. Du kannst nach Originalstellen fragen, Meldungen merken oder eine konkrete Testidee samt Kundennutzen festhalten. Die Skripte speichern diese Entscheidungen dauerhaft, sodass du in einer neuen Aufgabe am selben Archiv weiterarbeiten kannst.
+
+Das experimentelle macOS-Projekt verbindet drei Teile:
+
+| Bestandteil | Aufgabe |
+| --- | --- |
+| **Codex Desktop App** | Deine Bedienoberfläche: Fragen stellen, Meldungen einordnen, Quellen vertiefen und Markierungen beauftragen. |
+| **Python-Skripte + Codex CLI** | YouTube und optional X abrufen, Transkripte verarbeiten, einzelne Themen mit KI extrahieren und gleiche Ereignisse zusammenführen. |
+| **Lokales SQLite-Archiv** | Meldungen, Originalbelege, Bearbeitungsstände, Merkliste und Testliste dauerhaft speichern. |
+
+```mermaid
+flowchart TD
+    Q[YouTube / optional X] --> S[Python-Skripte: Abruf und Transkripte]
+    S --> K[Codex CLI: KI-Auswertung]
+    K --> D[(Lokales SQLite-Archiv)]
+    U[Du: News, Fragen, Markierungen] --> A[Codex Desktop App]
+    A --> C[monitor.py: gezielt lesen oder auf Anweisung markieren]
+    C <--> D
+    C --> A
+    A --> V[Antwort im Chat / optionale interaktive Übersicht]
+```
+
+Die Desktop App übernimmt die Gesprächsführung; für die automatisierte Quellenanalyse rufen die Skripte separat die Codex CLI auf. Ein eingerichteter macOS-Zeitplan kann die Sammlung auch bei geschlossener Desktop App ausführen. Das Archiv liegt auf dem Mac, die KI-Auswertung erfolgt über Codex.
+
+Kundenlösungen, eigene technische Umsetzung und Marketing werden gleich gewichtet. Ausgaben auf Deutsch, Originalstellen mit Zeitmarken in der Quellensprache. Quellenbehauptungen, eigene Einschätzungen und Werbung bleiben getrennt.
 
 ## Voraussetzungen
 
 - macOS und Python 3.10 oder neuer; Python verwendet ausschließlich die Standardbibliothek.
+- Für die Bedienung im Chat: Codex Desktop App mit Zugriff auf den lokalen Projektordner und Berechtigung, die Python-Skripte auszuführen. Die Terminalbefehle funktionieren auch ohne Desktop App.
 - Für echte Abrufe: `yt-dlp` im PATH.
 - Für KI-Auswertungen: eine installierte Codex CLI mit eigener ChatGPT-Anmeldung und einem verfügbaren Modell. Die Auswertung nutzt deren Kontingent; es gibt keine API-Key-Ausweichroute.
 - Optional für Beiträge ohne Untertitel: `ffmpeg`, `whisper-cli` und eine kompatible lokale Whisper-Modelldatei. Das Modell wird nicht mitgeliefert.
@@ -65,15 +90,56 @@ python3 monitor.py state 1 --saved yes --reason 'Für später merken'
 python3 monitor.py state 1 --testing yes --idea 'Dokumentensuche ausprobieren' --benefit 'Interne Suche vereinfachen' --reason 'Auf Testliste setzen'
 ```
 
-## Optionale Chatansicht
+## In der Codex Desktop App benutzen
 
-Die CLI funktioniert eigenständig. `NEWS-WORKFLOW.md` beschreibt zusätzlich eine Codex-Chatansicht, die einen verfügbaren Visualize-Skill und die Host-Integration für Aktionsnachrichten benötigt. Die HTML-Vorlage ist kein eigenständig schreibendes Dashboard. Ohne diese Integration die CLI verwenden.
+### Projekt öffnen und einrichten
+
+1. Dieses Repository klonen oder herunterladen und den lokalen Ordner in der Codex Desktop App als Projekt öffnen. Verwende den Ordner, in dem `monitor.py` und `AGENTS.md` liegen.
+2. Eine lokale Aufgabe in diesem Projekt starten. Für die Nutzung des Archivs im ursprünglichen Projektordner arbeiten: Ein separater Git-Worktree enthält die ignorierten Dateien `config.json` und `data/` nicht automatisch.
+3. Die oben beschriebene Einrichtung durchführen oder Codex damit beauftragen:
+
+   > Lies README.md und AGENTS.md und hilf mir, diesen News-Monitor einzurichten. Prüfe zuerst die vorhandenen Werkzeuge. Frage mich nach meinen Quellen und dem verfügbaren Modell. Überschreibe keine vorhandene Konfiguration und starte noch keinen Sammellauf.
+
+4. Nach der Einrichtung den ersten Abruf ausdrücklich anfordern:
+
+   > Sammle und verarbeite jetzt die Nachrichten aus meinen konfigurierten Quellen. Berichte anschließend über den Status und mögliche Abruflücken.
+
+Lokale Projekte stellen den Dateizugriff bereit; `AGENTS.md` enthält die projektbezogenen Arbeitsregeln. Diese Grundlagen beschreibt die offizielle OpenAI-Dokumentation zu [Projekten](https://learn.chatgpt.com/docs/projects) und [AGENTS.md](https://learn.chatgpt.com/docs/agent-configuration/agents-md). Die folgenden Nachrichtenabläufe werden durch dieses Repository vorgegeben.
+
+### Im Alltag einfach fragen
+
+> News
+
+Codex prüft den Archivstatus und zeigt standardmäßig Ungelesenes. Dieser Kurzstart startet keinen neuen Sammellauf. Ein frisches Archiv enthält erst nach dem ersten Abruf Meldungen.
+
+| Dein Auftrag im Chat | Was im Projekt passiert |
+| --- | --- |
+| „Zeige mir ungelesene Meldungen zu Telefon-KI.“ | `list --filter unread --query Telefon` grenzt das Archiv ein; Codex bereitet die Ergebnisse auf. |
+| „Vertiefe Meldung 42 und zeige die Originalstellen.“ | `show 42` lädt die Belegübersicht; `passage BELEG_ID` liefert die zugehörigen Originalstellen. |
+| „Merke Meldung 42 für später.“ | `state 42 --saved yes --reason …` speichert die Markierung. |
+| „Setze Meldung 42 auf die Testliste und schlage einen Pilotversuch mit Kundennutzen vor.“ | Codex formuliert Testidee und Nutzen und speichert beides mit `state`. Ein Testergebnis wird dabei nicht erfunden. |
+| „Markiere Meldung 42 als gelesen.“ | `state 42 --read yes --reason …` setzt ausdrücklich den Lesestatus. |
+| „Zeige meine Merkliste.“ | `list --filter saved` liest die gespeicherten Markierungen. |
+
+IDs sind Beispiele und werden durch tatsächliche Meldungs-IDs ersetzt. Bei unklarer Zuordnung muss Codex nachfragen. Öffnen, Anzeigen und Vertiefen ändern den Lesestatus nicht. Die Übersicht nennt zu jeder Meldung Quelle, Link und Veröffentlichungsdatum; offene Abrufprobleme bleiben sichtbar.
+
+### Warum Skripte und Chat zusammengehören
+
+`AGENTS.md` und `NEWS-WORKFLOW.md` verbinden deine Chataufträge mit den vorhandenen Befehlen. Codex liest gezielt relevante Meldungen und Belege aus dem Archiv. SQLite hält die Ergebnisse und deine Markierungen unabhängig vom Chatverlauf fest. Eine neue lokale Aufgabe im selben eingerichteten Ordner kann deshalb wieder dort ansetzen. Kopierst du nur das öffentliche Repository auf einen anderen Rechner, musst du Einrichtung und Archiv separat bereitstellen.
+
+### Interaktive Übersicht direkt im Chat
+
+Mit verfügbarem `visualize:visualize`-Skill und einer Desktop-Integration für Aktionsnachrichten zeigt Codex die mitgelieferte HTML-Ansicht im Chat. Sie bietet Filter, Quellenlinks, Merkliste, Testliste und Markierungen. Die Integration ist nicht Bestandteil dieses Repositorys und nicht für jede App-Installation vorausgesetzt. **Die Bedienung über normale Chatnachrichten funktioniert auch ohne diese Ansicht:** Codex führt die gleichen Skriptbefehle aus und antwortet als Text.
+
+Ein Klick auf eine Markierungsschaltfläche übergibt einen Auftrag an Codex. Erst der erfolgreiche `state`-Befehl schreibt ins Archiv; danach wird die Ansicht aktualisiert. Die HTML-Datei selbst hat keine direkte Schreibverbindung zur Datenbank. Details stehen in [NEWS-WORKFLOW.md](NEWS-WORKFLOW.md).
+
+Die Vorlage lässt sich mit den erfundenen Demodaten exportieren:
 
 ```sh
 NEWS_MONITOR_DATA=data/demo python3 scripts/render_news.py --output exports/demo.html
 ```
 
-Gerenderte Ansichten enthalten Archivdaten und gehören nicht ins öffentliche Repository.
+Für die Demo im Chat Codex ausdrücklich anweisen, bei allen Archivbefehlen `NEWS_MONITOR_DATA=data/demo` zu setzen. Ein HTML-Export allein richtet keine Chatintegration ein. Gerenderte Ansichten enthalten Archivdaten und gehören nicht ins öffentliche Repository.
 
 ## Optionaler täglicher Betrieb auf macOS
 

@@ -2,7 +2,7 @@
 
 Antworten auf Deutsch, Originalstellen in Originalsprache mit Zeitmarken. Zeitzone Europe/Berlin. Kundenlösungen, eigene Umsetzung und Marketing gleich gewichten.
 
-Vor Aussagen über das Archiv `python3 monitor.py status` bzw. `list` ausführen. Aktive Probleme erwähnen. Nicht das gesamte Archiv in den Kontext laden. Für „News“ NEWS-WORKFLOW.md lesen; Standardansicht Ungelesen, keinen Sammellauf starten.
+Vor Aussagen über das Archiv `python3 monitor.py status` bzw. `list` ausführen. Aktive Probleme erwähnen. Nicht das gesamte Archiv in den Kontext laden. Für „News“ NEWS-WORKFLOW.md lesen; Standardansicht Ungelesen, keinen Sammellauf starten. Ohne Visualize-Skill oder passende Host-Integration Ergebnisse als Text im Chat darstellen; Quellen und Veröffentlichungsdaten mit `show ID` nachladen. Je Meldung: News, Kanal mit Link, Veröffentlichungsdatum (DD.MM.YYYY, Europe/Berlin). Bei unklarer Meldungs-ID gezielt nachfragen.
 
 Lesestatus ausschließlich auf ausdrückliche Anweisung ändern: `state ID --read yes|no --reason 'Anweisung'`. Merken und Testliste separat. Testidee und Kundennutzen speichern, Ergebnisse nur anhand tatsächlicher Tests. Anzeigen verändert keine Zustände.
 

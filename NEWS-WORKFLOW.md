@@ -4,16 +4,18 @@
 
 > News
 
-Dieser Kurzstart ist in `AGENTS.md` hinterlegt und öffnet die bestehende Ansicht mit aktuellem Archivstand und gespeicherten Markierungen, beginnend mit Ungelesen.
+Dieser Kurzstart ist in `AGENTS.md` hinterlegt und zeigt den aktuellen Archivstand mit gespeicherten Markierungen, beginnend mit Ungelesen. Voraussetzung: eingerichteter lokaler Projektordner mit `config.json`; für vorhandene Nachrichten auch das zugehörige Archiv.
+
+Die Codex Desktop App übersetzt Chataufträge in Aufrufe der Python-Skripte. `monitor.py` liest und schreibt SQLite; der Chatverlauf ist kein Archiv. Die interaktive Darstellung benötigt zusätzlich den Visualize-Skill und eine Host-Integration für Aktionsnachrichten. Fehlt eine dieser Voraussetzungen, Nachrichten als Text im Chat darstellen und die folgenden Rendering-Schritte überspringen. Normale Chataufträge zum Vertiefen und Markieren bleiben möglich.
 
 ## Verbindlicher Ablauf
 
 1. `AGENTS.md` beachten und `python3 monitor.py status` ausführen. Kein Sammellauf allein zum Öffnen der Ansicht.
-2. Falls verfügbar, den Skill `visualize:visualize` vollständig lesen. Ohne diesen Skill die CLI-Textansicht verwenden. Die bestehende Gestaltung aus `ui/news-lesepult.template.html` wiederverwenden, nicht neu entwerfen.
+2. Falls verfügbar, den Skill `visualize:visualize` vollständig lesen. Ohne diesen Skill oder ohne Host-Integration `list --filter unread --limit 10` und bei Bedarf `show ID` aufrufen; Ergebnisse im Chat als Text darstellen. Je Meldung: **News** (Titel und Zusammenfassung), **Kanal** (Quelle mit Beitragslink), **Datum** (Veröffentlichungsdatum DD.MM.YYYY in Europe/Berlin); eigene Einschätzung separat. Dann Schritte 3–4 überspringen. Die bestehende Gestaltung aus `ui/news-lesepult.template.html` wiederverwenden, nicht neu entwerfen.
 3. In das ausdrücklich schreibbare Visualisierungsverzeichnis der aktuellen Aufgabe rendern: `python3 scripts/render_news.py --output /ABSOLUTER/PFAD/DER/AKTUELLEN/AUFGABE/news-lesepult.html`. Ist kein solches Verzeichnis vorhanden, einen erlaubten Ausgabeordner im Projekt verwenden. Keine Schreibrechte auf das Verzeichnis einer früheren Aufgabe voraussetzen.
 4. Die erzeugte Datei mit der Visualize-Referenz und `mode: wide` im Chat anzeigen. Das ist eine interaktive Ansicht im Chat, kein gehostetes Dashboard. Keine Veröffentlichung und keinen lokalen Server starten.
 5. Zustand aus SQLite ist maßgeblich. Das Auswählen oder Lesen einer Meldung verändert keine Markierung. Widget-Zustand speichert nur Ansicht, Auswahl und Eingabeentwürfe.
-6. Vom Nutzer ausgelöste Aktionsnachrichten aus der Ansicht bearbeiten: die angegebene ID und Aktion verwenden, nicht eine abweichende Auswahl einer alten Ansicht. `state ID` mit der ausdrücklichen Anweisung als `--reason` ausführen. Andere Markierungen unverändert lassen. Danach erneut rendern und die Visualize-Referenz ausgeben. Nicht allein wegen einer Widget-Auswahl Änderungen vornehmen.
+6. Vom Nutzer ausgelöste Aktionsnachrichten aus der Ansicht bearbeiten: die angegebene ID und Aktion verwenden, nicht eine abweichende Auswahl einer alten Ansicht. `state ID` mit der ausdrücklichen Anweisung als `--reason` ausführen. Andere Markierungen unverändert lassen. Danach die verwendete Darstellung aktualisieren: erneut rendern oder den Zustand als Text bestätigen. Nicht allein wegen einer Widget-Auswahl Änderungen vornehmen.
 7. Testliste: Testidee und möglichen Kundennutzen speichern; keine Testergebnisse erfinden. Fragen mit `show ID` und bei Bedarf `passage BELEG_ID` beantworten. Originalstellen mit Zeitmarken erhalten. Quellenbehauptung und eigene Einschätzung trennen.
 8. Wenn die Antwort zusätzlich in der Ansicht gewünscht wird, sie bei der betreffenden Meldung ergänzen. Dauerhafte Klärungen außerhalb des Chats im Projekt ablegen und beim erneuten Rendern berücksichtigen. Keine Antwort als Quellenbehauptung ausgeben.
 
