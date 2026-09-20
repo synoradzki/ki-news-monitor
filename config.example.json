@@ -1,0 +1,19 @@
+{
+  "timezone": "Europe/Berlin",
+  "initial_since": "2026-01-01T00:00:00+01:00",
+  "model": "MODELL_IN_DEINER_CODEX_ANMELDUNG",
+  "whisper_model": "data/models/ggml-base.bin",
+  "youtube": [
+    "theAIsearch"
+  ],
+  "x": [],
+  "daily_hour": 8,
+  "daily_minute": 15,
+  "notifications": "status_only",
+  "tools": {
+    "yt_dlp": "yt-dlp",
+    "codex": "codex",
+    "ffmpeg": "ffmpeg",
+    "whisper": "whisper-cli"
+  }
+}
