@@ -1,6 +1,41 @@
-# KI-News-Monitor
+# KI-News-Monitor für die Codex Desktop App
 
 **Dein persönlicher KI-News-Monitor in der Codex Desktop App: Nachrichten per Skript sammeln, im Chat verstehen und gezielt für die eigene Arbeit nutzen.**
+
+## Warum ich das mit Codex nutze
+
+Ich benutze diesen News-Monitor selbst in der **Codex Desktop App**. Für mich liegt die Stärke darin, mit Codex an den Nachrichten weiterzuarbeiten: nachfragen, Quellen prüfen, Ideen für Kundenprojekte entwickeln und interessante Meldungen für später festhalten. Die Skripte übernehmen Abruf und Speicherung; Codex ist mein Gegenüber für die tägliche Arbeit damit.
+
+Ein typischer Ablauf nach der Einrichtung:
+
+> **Ich:** News
+>
+> **Codex:** Zeigt die gespeicherten ungelesenen Meldungen samt Quellen und Veröffentlichungsdatum.
+>
+> **Ich:** Welche dieser Meldungen könnte für eine Wissensdatenbank bei einem Kunden interessant sein?
+>
+> **Codex:** Ordnet passende Meldungen anhand der gespeicherten Belege ein.
+>
+> **Ich:** Vertiefe diese Meldung und zeige mir die Originalstelle.
+>
+> **Ich:** Merke sie und halte eine Testidee mit möglichem Kundennutzen fest.
+
+Dies ist ein beispielhafter Bedienablauf, kein wörtlicher Chatmitschnitt. Bei einer unklaren Auswahl fragt Codex nach der Meldungs-ID. Markierungen werden erst auf ausdrücklichen Auftrag gespeichert.
+
+## Was du nach dem Klonen bekommst
+
+**Das Repository enthält die Gestaltung meiner News-Übersicht und die Regeln für die Zusammenarbeit mit Codex. Eine identische Darstellung unmittelbar nach dem Klonen ist damit noch nicht garantiert.**
+
+| Teil meiner Nutzung | Was du dafür brauchst |
+| --- | --- |
+| Mit Codex über Nachrichten sprechen, Originalstellen abrufen und Meldungen markieren | Lokales Projekt in der Codex Desktop App, eingerichtete Skripte, eigenes Archiv und passende Ausführungsrechte. |
+| Interaktive Übersicht mit Filtern und Schaltflächen direkt im Chat | Zusätzlich den `visualize:visualize`-Skill und eine kompatible App-Integration für Darstellung und Aktionsnachrichten. Beides wird hier nicht mitgeliefert. |
+| Gestaltung des Lesepults | Die enthaltene Vorlage `ui/news-lesepult.template.html`; Codex soll sie wiederverwenden. |
+| Nachrichten, Quellenwahl und persönliche Markierungen | Deine eigene lokale Einrichtung. Mein privates Archiv und meine Markierungen werden nicht verteilt. |
+
+Ohne die zusätzliche Darstellungsintegration kannst du nach der Einrichtung im Codex-Chat mit Textantworten arbeiten. Die HTML-Vorlage allein aktiviert keine interaktive Oberfläche. Die vollständige Übernahme der interaktiven Ansicht auf eine frische fremde Codex-Installation wurde bisher nicht nachgewiesen.
+
+## So spielen Codex und die Skripte zusammen
 
 Du öffnest das eingerichtete Projekt in Codex und schreibst **„News“**. Codex liest dein lokales Archiv, zeigt ungelesene Meldungen und hilft dir, einzelne Themen zu vertiefen. Du kannst nach Originalstellen fragen, Meldungen merken oder eine konkrete Testidee samt Kundennutzen festhalten. Die Skripte speichern diese Entscheidungen dauerhaft, sodass du in einer neuen Aufgabe am selben Archiv weiterarbeiten kannst.
 
